@@ -1,0 +1,46 @@
+﻿<Window x:Class="_02_file_copy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_02_file_copy"
+        mc:Ignorable="d" 
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Padding" Value="5"></Setter>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Padding" Value="5"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel LastChildFill="False">        
+    <Grid Margin="10" DockPanel.Dock="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label>From :</Label>
+        <Label Grid.Row="1">To :</Label>
+        <TextBox Text="{Binding Source}"  Grid.Column="1"></TextBox>
+        <TextBox Text="{Binding Destination}"  Grid.Column="1" Grid.Row="1"></TextBox>
+        <Button Click="SourceButton_Click"  Grid.Column="2">Browse</Button>
+        <Button Click="DesButton_Click" Grid.Column="2" Grid.Row="1">Browse</Button>
+    </Grid>
+    <Button Click="CopyButton_Click" DockPanel.Dock="Top" >Copy</Button>
+        <ProgressBar Value="{Binding Progress}" DockPanel.Dock="Bottom" Height="15"  ></ProgressBar>
+    </DockPanel>
+    
+</Window>
