@@ -16,11 +16,11 @@
         d:DataContext="{d:DesignInstance local:ViewModel, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <Style TargetType="{x:Type Button}">
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
             <Setter Property="Margin" Value="5"></Setter>
             <Setter Property="Padding" Value="5"></Setter>
         </Style>
-        <Style TargetType="{x:Type TextBox}">
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
             <Setter Property="Margin" Value="5"></Setter>
             <Setter Property="Padding" Value="5"></Setter>
             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
@@ -52,17 +52,20 @@
         <ProgressBar Value="{Binding Progress}" DockPanel.Dock="Bottom" Height="15"  ></ProgressBar>
         <ListBox ItemsSource="{Binding Processes }" HorizontalContentAlignment="Stretch" 
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemTemplate>
+            <ListBox.ItemTemplate>       
                 <DataTemplate>
-                    <ListBoxItem >
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding FileName}"
+                    <materialDesign:Card
+                                  Background="{DynamicResource PrimaryHueLightBrush}"
+                                  Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                  Padding="8">                       
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                            <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding FileName}"
                                        MaxWidth="150"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
@@ -70,12 +73,12 @@
                                        FontWeight="Bold"
                                        ></TextBlock>
 
-                            <TextBlock Grid.Column="1" MaxWidth="150" > Speed : <Run Text="{Binding MegaBytesPerSecond, Mode=OneWay}"></Run> Mb/s</TextBlock>
-                            <TextBlock Grid.Column="3" MaxWidth="100"  ><Run Text="{Binding PercentageInt, Mode=OneWay}"></Run> %  </TextBlock>
-                            <ProgressBar Grid.Column="2" Height="10" Margin="5" Value="{Binding Percentage}"></ProgressBar>
-                        </Grid>
-                    </ListBoxItem>
-                </DataTemplate>
+                        <TextBlock Grid.Column="1" MaxWidth="150" > Speed : <Run Text="{Binding MegaBytesPerSecond, Mode=OneWay}"></Run> Mb/s</TextBlock>
+                        <TextBlock Grid.Column="3" MaxWidth="100"  ><Run Text="{Binding PercentageInt, Mode=OneWay}"></Run> %</TextBlock>
+                        <ProgressBar Grid.Column="2" Height="10" Margin="5" Value="{Binding Percentage}"></ProgressBar>
+                    </Grid>
+                    </materialDesign:Card>
+                </DataTemplate>                  
             </ListBox.ItemTemplate>
         </ListBox>
     </DockPanel>
