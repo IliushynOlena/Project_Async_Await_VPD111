@@ -56,7 +56,7 @@ namespace _02_file_copy
         }
         private async void CopyButton_Click(object sender, RoutedEventArgs e)
         {
-            #region Type1 Type2
+           
             // type 1  - using File class
             //C:\Users\helen\Desktop\TestFolder + 4.txt
             string filename = Path.GetFileName(model.Source);
@@ -67,6 +67,7 @@ namespace _02_file_copy
 
         private Task CopyFileAsync( string src, string dest)
         {
+            #region Type1 Type2
             //File.Copy(Source, destFilename, true);
             //MessageBox.Show("Complete!");
 
