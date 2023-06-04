@@ -4,6 +4,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace _02_file_copy
             InitializeComponent();
             model = new ViewModel()
             {
-                Source = @"C:\Users\helen\Desktop\Заняття\4.txt",
+                Source = @"C:\Users\helen\Downloads\10GB.bin",
                 Destination = @"C:\Users\helen\Desktop\TestFolder",
                 Progress = 0
             };
@@ -61,11 +62,18 @@ namespace _02_file_copy
             //C:\Users\helen\Desktop\TestFolder + 4.txt
             string filename = Path.GetFileName(model.Source);
             string destFilename = Path.Combine(model.Destination, filename);
-            await  CopyFileAsync(model.Source, destFilename);
+            //add new item in list
+            CopyProcessInfo info = new CopyProcessInfo(filename);
+          
+            model.AddProcess(info);
+  
+            await  CopyFileAsync(model.Source, destFilename, info);
+            info.Percentage = 100;  
+
             MessageBox.Show("Complete");
         }
 
-        private Task CopyFileAsync( string src, string dest)
+        private Task CopyFileAsync( string src, string dest, CopyProcessInfo info)
         {
             #region Type1 Type2
             //File.Copy(Source, destFilename, true);
@@ -98,17 +106,41 @@ namespace _02_file_copy
             // type 3  - using FileTransferManager class
             return FileTransferManager.CopyWithProgressAsync(src, dest, (progress) =>
             {
-                model.Progress = progress.Percentage;
+                //model.Progress = progress.Percentage;
+                info.Percentage = progress.Percentage;
+                info.BytesPerSecond = progress.BytesPerSecond;
             }, false);
         }
     }
     [AddINotifyPropertyChangedInterface]
     class ViewModel
     {
+        private ObservableCollection<CopyProcessInfo> processes ;
         public string Source { get; set; }
         public string Destination { get; set; }
         public double Progress { get; set; }
         public bool IsWaiting => Progress == 0;
-
+        public IEnumerable<CopyProcessInfo> Processes => processes;
+        public ViewModel()
+        {
+            processes = new ObservableCollection<CopyProcessInfo>();
+        }
+        public void AddProcess(CopyProcessInfo info)
+        {
+            processes.Add(info);
+        }
+    }
+    [AddINotifyPropertyChangedInterface]
+    class CopyProcessInfo
+    {
+        public string FileName { get; set; }
+        public double Percentage { get; set; }
+        public int PercentageInt => (int)Percentage;
+        public double BytesPerSecond { get; set; }
+        public double MegaBytesPerSecond => Math.Round(BytesPerSecond / 1024 / 1024, 1);
+        public CopyProcessInfo(string filename)
+        {
+            FileName = filename;
+        }
     }
 }

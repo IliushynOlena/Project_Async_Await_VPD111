@@ -5,6 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_02_file_copy"
         mc:Ignorable="d" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+        d:DataContext="{d:DesignInstance local:ViewModel, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
@@ -19,28 +28,57 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel LastChildFill="False">        
-    <Grid Margin="10" DockPanel.Dock="Top">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Label>From :</Label>
-        <Label Grid.Row="1">To :</Label>
-        <TextBox Text="{Binding Source}"  Grid.Column="1"></TextBox>
-        <TextBox Text="{Binding Destination}"  Grid.Column="1" Grid.Row="1"></TextBox>
-        <Button Click="SourceButton_Click"  Grid.Column="2">Browse</Button>
-        <Button Click="DesButton_Click" Grid.Column="2" Grid.Row="1">Browse</Button>
-    </Grid>
-    <Button Click="CopyButton_Click" DockPanel.Dock="Top" >Copy</Button>
+    <DockPanel>
+        <Grid Margin="10" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label>From :</Label>
+            <Label Grid.Row="1">To :</Label>
+            <TextBox Text="{Binding Source}"  Grid.Column="1"></TextBox>
+            <TextBox Text="{Binding Destination}"  Grid.Column="1" Grid.Row="1"></TextBox>
+            <Button Click="SourceButton_Click"  Grid.Column="2">Browse</Button>
+            <Button Click="DesButton_Click" Grid.Column="2" Grid.Row="1">Browse</Button>
+        </Grid>
+        <Button Click="CopyButton_Click" DockPanel.Dock="Top" >Copy</Button>
         <ProgressBar Value="{Binding Progress}" DockPanel.Dock="Bottom" Height="15"  ></ProgressBar>
+        <ListBox ItemsSource="{Binding Processes }" HorizontalContentAlignment="Stretch" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding FileName}"
+                                       MaxWidth="150"
+                                       TextWrapping="NoWrap"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"
+                                       FontWeight="Bold"
+                                       ></TextBlock>
+
+                            <TextBlock Grid.Column="1" MaxWidth="150" > Speed : <Run Text="{Binding MegaBytesPerSecond, Mode=OneWay}"></Run> Mb/s</TextBlock>
+                            <TextBlock Grid.Column="3" MaxWidth="100"  ><Run Text="{Binding PercentageInt, Mode=OneWay}"></Run> %  </TextBlock>
+                            <ProgressBar Grid.Column="2" Height="10" Margin="5" Value="{Binding Percentage}"></ProgressBar>
+                        </Grid>
+                    </ListBoxItem>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </DockPanel>
-    
+
+
 </Window>
